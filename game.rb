@@ -6,109 +6,114 @@ require 'colorize'
 # should see room description (available movement), room items, monsters after each action
 # end state I'll leave to you
 class Player
-    attr_accessor :hitpoints, :attack
+    attr_accessor :hitpoints, :attack, :inventory
     def initialize
         @hitpoints = 20
         @attack = 1
+        @inventory = []
     end
     def is_alive
         @hitpoints > 0
     end
 end
 class Library
+    def description
+        puts "a large room filled with dark wooden bookcases that reach from the floor the ceiling. There is one door on the west wall."
+    end
 end
 class Hallway
+    def description
+        puts "a vast empty corridor lined with stone pillars. A massive woodeen door lies partially open at the northern end. Light spills through the opening of the door."
+    end
 end
 class Armory
+    def description
+        puts "a dark, cold room lined with stone. The walls are lined what used to be usable weapons and armor. Time has defeated them. There are doors on north and south walls."
+    end
 end
 class Study
+    def description
+        puts "a warm, well lit room. This room is small, but invitiing. All the candles are lit and it appears someone spends a lot of time, or maybe spent a lot of time here. There are two doors, one on the north and one on the east wall."
+    end
+    def possible_directions
+        puts "North or East"
+    end
 end
 class Cellar
+    def description
+        puts "a cold, stone walled and floored room that obviously used to house food and drink. A long while seems to have passed since either of those could actually be found in the room though." 
+        rest 4
+        puts "a collection of hay rests in one corner, as if someone has been sleeping here."
+        rest 3
+        "There is a door on the north and south wall."
+    end
 end
 class Dungeon
+    def description
+        puts "a cold, bleek room with a terrible stench. It is hard to see, but it what looks like prison cells line the northern and southern walls."
+        rest 3
+        puts "There is a door at the west and east end of the room."
+    end
 end
 class Goblin
+    def description
+        puts ""
+    end
 end
 class Troll
+    def description
+        puts ""
+    end
+end
+class Sword
+    attr_accessor :sword, :damage
+    def initialize
+        @sword
+    end
+    def swing_sword
+        @damage = rand(10) + 1
+    end
+end
+class Stick
+    attr_accessor :stick, :damage
+    def initialize
+        @stick
+    end
+    def stick_swing
+        @damage = rand(2) + 1
+    end
+end
+class Potion < Player
+    attr_accessor :potion, :hitpoints
+    def initialize
+        @potion
+    end
+    def drink_potion
+        @hitpoints +=10
+    end
+end
+class GameLoop
+    attr_accessor :starting_room
+    def initialize
+        @player = Player.new
+        @library = Library.new
+        @armory = Armory.new
+        @dungeon = Dungeon.new
+        @cellar = Cellar.new
+        @hallway = Hallway.new
+        @study = Study.new
+        @rooms = [@library, @armory, @dungeon, @cellar, @hallway, @study]
+    end
+    def choose_start_room
+        @starting_room = @rooms[rand(6)]
+    end
 end
 
-
+new_game = GameLoop.new
+new_game.choose_start_room
 puts"THE GAME IS SIMPLE, INPUT THE LETTER OF YOUR CHOICE.".blue
 sleep 3
-puts"You open your eyes and see you are in a large, dark room. There is barely enough light to see. What do you do?"
-sleep 3
-puts"A:Feel your way around the room. B:Start screaming for help. C:Meditate".red
-first_move = gets.chomp.upcase
-if first_move == 'B'
-    puts"You scream as loud as you can. Nothing happens, but now your throat is dry and you are still in the same spot you woke up in."
-    sleep 3
-    puts"What do you do now?"
-    sleep 1
-    puts"A:Feel your way around the room. B:Meditate".red
-    first_move = gets.chomp.upcase
-    if first_move == "B"
-        first_move = "C"
-    end
-end
-if first_move == "C"
-    puts"You cross your legs and clear your mind of all other worldy matters. You do not fear death, you do not fear life."
-    sleep 3
-    puts"..."
-    sleep 1
-    puts"..."
-    sleep 1
-    puts"..."
-    sleep 1
-    puts"..."
-    sleep 3
-    puts"You have no idea how much time has passed, but you know you are close to enlightenment."
-    sleep 3
-    puts"What do you do?"
-    puts"A:Feel your way around the room. B:Meditate More".red
-    first_move = gets.chomp.upcase
-    if first_move == "B"
-        puts"You cross your legs again and clear your mind of all other worldy matters. You do not fear death, you do not fear life."
-            sleep 3
-            puts"..."
-            sleep 1
-            puts"..."
-            sleep 1
-            puts"..."
-            sleep 1
-            puts"..."
-            sleep 1
-            puts"..."
-            sleep 1
-            puts"..."
-            sleep 1
-            puts"..."
-            sleep 3
-            puts "You have reached enlightenment..."
-            sleep 4
-            puts "You try to stand up and you feel your legs feel weak beneath you. 'How long has it been since I've eaten you think to yourself?' As you go to take a step your legs crumble beneath you, you don't have the strength to walk."
-            sleep 8
-            puts "Your face smashes against the cold stone on the ground"
-            sleep 2
-            puts "Everything around you is growing dark..."
-            sleep 4
-            puts"This is the end"
-            sleep 2
-            puts ".........."
-            puts ""
-            puts "GAME OVER"
-    end
-end
-if first_move == "A"
-    outcome = rand(3) + 1
-    if outcome == 1
-        puts"You find a rusty sword on the ground next to large wooden door. A cold breeze is rolling through the door. You pick up the sword and proceed through the door."
-        @attack = 5
-    elsif outcome == 2
-        puts"You run your fingers along the wall of what seems to be a large circular room until you find a large wooden door. The air seeping through the cracked door is freezing cold. You pull the door open and walk through."
-    elsif outcome == 3
-        puts"You feel your way through a large room. You spot a large wooden door and make your way toward it. As you do, your foot catches on a loose stone and you fall flat onto your face. You lose 5 health. You feel blood begin to run down your nose. Embarrassed, dusty, and a tad bloody you proceed through the large wooden door."
-        @hitpoints = 15
-    end
-end
+puts"You open your eyes and see #{new_game.starting_room.description}"
+
 
 
