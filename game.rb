@@ -1,5 +1,10 @@
 require 'colorize'
-
+# 6 rooms (movement between should mirror the shape of "6"—top-right can only go west, top-left can only go east and south, etc).
+# 3 items (that can be picked up/put down; show inventory)
+# 2 monsters (can be attacked/die)
+# start in random room,	
+# should see room description (available movement), room items, monsters after each action
+# end state I'll leave to you
 class Player
     attr_accessor :hitpoints, :attack
     def initialize
@@ -10,6 +15,24 @@ class Player
         @hitpoints > 0
     end
 end
+class Library
+end
+class Hallway
+end
+class Armory
+end
+class Study
+end
+class Cellar
+end
+class Dungeon
+end
+class Goblin
+end
+class Troll
+end
+
+
 puts"THE GAME IS SIMPLE, INPUT THE LETTER OF YOUR CHOICE.".blue
 sleep 3
 puts"You open your eyes and see you are in a large, dark room. There is barely enough light to see. What do you do?"
