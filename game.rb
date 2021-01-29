@@ -9,111 +9,115 @@ class Player
     attr_accessor :hitpoints, :attack, :inventory
     def initialize
         @hitpoints = 20
-        @attack = 1
+        @ap = 1
         @inventory = []
     end
     def is_alive
         @hitpoints > 0
     end
 end
-class Library
-    def description
-        puts "a large room filled with dark wooden bookcases that reach from the floor the ceiling. There is one door on the west wall."
-    end
-end
-class Hallway
-    def description
-        puts "a vast empty corridor lined with stone pillars. A massive woodeen door lies partially open at the northern end. Light spills through the opening of the door."
-    end
-end
-class Armory
-    def description
-        puts "a dark, cold room lined with stone. The walls are lined what used to be usable weapons and armor. Time has defeated them. There are doors on north and south walls."
-    end
-end
-class Study
-    def description
-        puts "a warm, well lit room. This room is small, but invitiing. All the candles are lit and it appears someone spends a lot of time, or maybe spent a lot of time here. There are two doors, one on the north and one on the east wall."
-    end
-    def possible_directions
-        puts "North or East"
-    end
-end
-class Cellar
-    def description
-        puts "a cold, stone walled and floored room that obviously used to house food and drink. A long while seems to have passed since either of those could actually be found in the room though." 
-        rest 4
-        puts "a collection of hay rests in one corner, as if someone has been sleeping here."
-        rest 3
-        "There is a door on the north and south wall."
-    end
-end
-class Dungeon
-    def description
-        puts "a cold, bleek room with a terrible stench. It is hard to see, but it what looks like prison cells line the northern and southern walls."
-        rest 3
-        puts "There is a door at the west and east end of the room."
-    end
-end
-class Goblin
-    def description
-        puts ""
-    end
-end
-class Troll
-    def description
-        puts ""
-    end
-end
-class Sword
-    attr_accessor :sword, :damage
+class Monster
     def initialize
-        @sword
+        @name = name
+        @hitpoints = hitpoints
+        @ap = ap
     end
-    def swing_sword
-        @damage = rand(10) + 1
+    def attack
+        rand(@ap) + 1
     end
-end
-class Stick
-    attr_accessor :stick, :damage
-    def initialize
-        @stick
-    end
-    def stick_swing
-        @damage = rand(2) + 1
+    def is_alive
+        @hitpoints > 0
     end
 end
-class Potion < Player
-    attr_accessor :potion, :hitpoints
-    def initialize
-        @potion
-    end
-    def drink_potion
-        @hitpoints +=10
+class Room
+    attr_accessor :south_door, :north_door, :west_door, :north_door, :name, :description
+    def initialize(name,description,south_door = false,north_door = false,west_door = false,east_door = false)
+        @name = name
+        @description = description
+        @south_door
+        @east_door 
+        @west_door 
+        @north_door 
     end
 end
-class GameLoop
-    attr_accessor :starting_room
+class Weapon
     def initialize
-        @player = Player.new
-        @library = Library.new
-        @armory = Armory.new
-        @dungeon = Dungeon.new
-        @cellar = Cellar.new
-        @hallway = Hallway.new
-        @study = Study.new
-        @rooms = [@library, @armory, @dungeon, @cellar, @hallway, @study]
+        @name = name
+        @ap = ap
     end
-    def choose_start_room
-        @starting_room = @rooms[rand(6)]
+    def attack
+        rand(@ap) + 1
     end
 end
 
-new_game = GameLoop.new
-new_game.choose_start_room
+
+
+@player = Player.new
+@library = Room.new("Library", "a large room filled with dark wooden bookcases that reach from the floor the ceiling. There is one door on the west wall.",@west_door=true)
+@hallway = Room.new("Hallway", "a vast empty corridor lined with stone pillars. A massive woodeen door lies partially open at the northern end. Light spills through the opening of the door.",@north_door=true , @east_door=true)
+@armory = Room.new("Armory", "a dark, cold room lined with stone. The walls are lined what used to be usable weapons and armor. Time has defeated them. There are doors on north and south walls.",@north_door=true , @south_door=true)
+@study = Room.new("Study", "a warm, well lit room. This room is small, but invitiing. All the candles are lit and it appears someone spends a lot of time, or maybe spent a lot of time here. There are two doors, one on the north and one on the east wall.",@west_door=true , @east_door=true)
+@cellar = Room.new("Cellar", "a cold, stone walled and floored room that obviously used to house food and drink. A long while seems to have passed since either of those could actually be found in the room though.", @north_door=true, @south_door=true )
+@dungeon = Room.new("Dungeon", "a cold, bleek room with a terrible stench. It is hard to see, but it what looks like prison cells line the northern and southern walls.", @west_door = true, @east_door = true)
+@rooms = [@library, @armory, @dungeon, @cellar, @hallway, @study]
+@current_room = rand(6)
+
+
 puts"THE GAME IS SIMPLE, INPUT THE LETTER OF YOUR CHOICE.".blue
-sleep 3
-puts"You open your eyes and see #{new_game.starting_room.description}"
+puts"You open your eyes and see ..."
+
+puts "#{@rooms[@current_room].description}"
+
+
+while true
+    # Output room you are in
+    # give options for room
+    # take input for options
+    # respond to input
+    puts "What would you like to do"
+    puts "A:Search the Room. B:Wait C: Exit the room"
+    @choice = gets.chomp
+    if @choice.upcase == "C"
+        @current_room += 1
+    end
+    puts "#{@rooms[@current_room].description}"
+    # move between rooms
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
