@@ -8,7 +8,7 @@ require 'colorize'
 class Player
     attr_accessor :hitpoints, :attack, :inventory
     def initialize
-        @hitpoints = 20
+        @hitpoints = 15
         @ap = 1
         @inventory = []
     end
@@ -30,14 +30,17 @@ class Monster
     end
 end
 class Room
-    attr_accessor :south_door, :north_door, :west_door, :north_door, :name, :description
-    def initialize(name,description,south_door = false,north_door = false,west_door = false,east_door = false)
+    attr_accessor :name, :description, :searched
+    def initialize(name, description)
         @name = name
         @description = description
-        @south_door
-        @east_door 
-        @west_door 
-        @north_door 
+        @searched = false
+    end
+    def has_weapon
+
+    end
+    def has_monster
+    
     end
 end
 class Weapon
@@ -53,35 +56,47 @@ end
 
 
 @player = Player.new
-@library = Room.new("Library", "a large room filled with dark wooden bookcases that reach from the floor the ceiling. There is one door on the west wall.",@west_door=true)
-@hallway = Room.new("Hallway", "a vast empty corridor lined with stone pillars. A massive woodeen door lies partially open at the northern end. Light spills through the opening of the door.",@north_door=true , @east_door=true)
-@armory = Room.new("Armory", "a dark, cold room lined with stone. The walls are lined what used to be usable weapons and armor. Time has defeated them. There are doors on north and south walls.",@north_door=true , @south_door=true)
-@study = Room.new("Study", "a warm, well lit room. This room is small, but invitiing. All the candles are lit and it appears someone spends a lot of time, or maybe spent a lot of time here. There are two doors, one on the north and one on the east wall.",@west_door=true , @east_door=true)
-@cellar = Room.new("Cellar", "a cold, stone walled and floored room that obviously used to house food and drink. A long while seems to have passed since either of those could actually be found in the room though.", @north_door=true, @south_door=true )
-@dungeon = Room.new("Dungeon", "a cold, bleek room with a terrible stench. It is hard to see, but it what looks like prison cells line the northern and southern walls.", @west_door = true, @east_door = true)
-@rooms = [@library, @armory, @dungeon, @cellar, @hallway, @study]
-@current_room = rand(6)
+@wooden_sword = Weapon.new("Wooden Sword", 4)
+@steel_sword = Weapon.new("Steel Sword", 10)
+@stick = Weapon.new("Stick", 2)
+@goblin = Monster.new("Goblin", 5, 3)
+@troll = Monster.new("Troll", 15, 6)
+@library = Room.new("Library", "a large room filled with dark wooden bookcases that reach from the floor the ceiling. There is one door on the west wall.")
+@hallway = Room.new("Hallway", "a vast empty corridor lined with stone pillars. A massive wooden door lies partially open at the northern end. Light spills through the opening of the door.")
+@armory = Room.new("Armory", "a dark, cold room lined with stone. The walls are lined what used to be usable weapons and armor. Time has defeated them. There are doors on north and south walls.")
+@study = Room.new("Study", "a warm, well lit room. This room is small, but invitiing. All the candles are lit and it appears someone spends a lot of time, or maybe spent a lot of time here. There are two doors, one on the north and one on the east wall.")
+@cellar = Room.new("Cellar", "a cold, stone walled and floored room that obviously used to house food and drink. A long while seems to have passed since either of those could actually be found in the room though.")
+@dungeon = Room.new("Dungeon", "a cold, bleek room with a terrible stench. It is hard to see, but it what looks like prison cells line the northern and southern walls.")
+@rooms = [@library, @armory, @dungeon, @cellar, @study].shuffle.append(@hallway)
+@current_room = 0
 
 
 puts"THE GAME IS SIMPLE, INPUT THE LETTER OF YOUR CHOICE.".blue
 puts"You open your eyes and see ..."
 
-puts "#{@rooms[@current_room].description}"
-
 
 while true
     # Output room you are in
+    puts "#{@rooms[@current_room].description}"
+
     # give options for room
-    # take input for options
-    # respond to input
     puts "What would you like to do"
     puts "A:Search the Room. B:Wait C: Exit the room"
-    @choice = gets.chomp
-    if @choice.upcase == "C"
-        @current_room += 1
+    
+    # take input for options
+    @choice.upcase = gets.chomp
+        
+    # respond to input
+    while @choice != "A" @choice && != "B" && @choice !="C"
+        if @choice == "A"
+        end
+        if @choice == "B"
+        end
+        if @choice.upcase == "C"
+            @current_room += 1
+        end
+        puts"Hey dummy, input a letter"
     end
-    puts "#{@rooms[@current_room].description}"
-    # move between rooms
 end
 
 
