@@ -17,7 +17,7 @@ class Player
     end
 end
 class Monster
-    def initialize
+    def initialize(name, hitpoints, ap)
         @name = name
         @hitpoints = hitpoints
         @ap = ap
@@ -44,7 +44,7 @@ class Room
     end
 end
 class Weapon
-    def initialize
+    def initialize(name, ap)
         @name = name
         @ap = ap
     end
@@ -75,31 +75,41 @@ puts"THE GAME IS SIMPLE, INPUT THE LETTER OF YOUR CHOICE.".blue
 puts"You open your eyes and see ..."
 
 
-while true
+while @current_room <= 5
     # Output room you are in
     puts "#{@rooms[@current_room].description}"
 
     # give options for room
     puts "What would you like to do"
-    puts "A:Search the Room. B:Wait C: Exit the room"
+    if @current_room == 0
+    puts "A:Search the Room. B:Wait C:Go to the next room"
+    else
+    puts "A:Search the Room. B:Wait C:Go to the next room D:Go back a room"
+    end
     
     # take input for options
-    @choice.upcase = gets.chomp
+    @choice = gets.chomp.upcase
         
     # respond to input
-    while @choice != "A" @choice && != "B" && @choice !="C"
+    choices = ["A", "B", "C", "D"]
+    if !choices.include?(@choice)
+        puts"Hey dummy, input a letter"
+    else
         if @choice == "A"
         end
         if @choice == "B"
         end
-        if @choice.upcase == "C"
+        if @choice == "C"
             @current_room += 1
         end
-        puts"Hey dummy, input a letter"
+        if @current_room != 0 && @choice == "D"
+            @current_room -= 1
+        end
     end
+
 end
 
-
+puts "You made it out! Would you like to try again?"
 
 
 
