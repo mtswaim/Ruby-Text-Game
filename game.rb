@@ -63,11 +63,11 @@ end
 @stick = Weapon.new("Stick", 2)
 @goblin = Monster.new("Goblin", 5, 3)
 @troll = Monster.new("Troll", 15, 6)
-@library = Room.new("Library", "a large room filled with dark wooden bookcases that reach from the floor the ceiling. There is one door on the west wall.")
+@library = Room.new("Library", "a large room filled with dark wooden bookcases that reach from the floor the ceiling.")
 @hallway = Room.new("Hallway", "a vast empty corridor lined with stone pillars. A massive wooden door lies partially open at the northern end. Light spills through the opening of the door.")
-@armory = Room.new("Armory", "a dark, cold room lined with stone. The walls are lined what used to be usable weapons and armor. Time has defeated them. There are doors on north and south walls.")
-@study = Room.new("Study", "a warm, well lit room. This room is small, but invitiing. All the candles are lit and it appears someone spends a lot of time, or maybe spent a lot of time here. There are two doors, one on the north and one on the east wall.")
-@cellar = Room.new("Cellar", "a cold, stone walled and floored room that obviously used to house food and drink. A long while seems to have passed since either of those could actually be found in the room though.")
+@armory = Room.new("Armory", "a dark, cold room lined with stone. The walls are lined what used to be usable weapons and armor. Time has defeated them.")
+@study = Room.new("Study", "a warm, well lit room. This room is small, but inviting. All the candles are lit and it appears someone spends a lot of time, or maybe spent a lot of time here.")
+@cellar = Room.new("Cellar", "a cold, stone walled and floored room that obviously used to house food and drink. A long while seems to have passed since either of those could actually be found in the room.")
 @dungeon = Room.new("Dungeon", "a cold, bleek room with a terrible stench. It is hard to see, but it what looks like prison cells line the northern and southern walls.")
 @rooms = [@library, @armory, @dungeon, @cellar, @study].shuffle.append(@hallway)
 @room_index = 0
@@ -80,7 +80,27 @@ puts"You open your eyes and see ...".light_green.bold
 while @room_index < @rooms.length
     # Output room you are in
     puts "#{@rooms[@room_index].description.light_green.bold}"
-
+    # We only want to fight in certain rooms
+    if @rooms[@room_index] == @armory || @rooms[@room_index] ==  @dungeon || @rooms[@room_index] ==  @cellar
+        if rand(10) > 5
+            puts "A goblin attacks you"
+            Fight.new(@player, @goblin).fight_cycle 
+        end
+    end
+    if @room_index == 5
+        Fight.new(@player, @troll).fight_cycle
+    end
+    if @player.hitpoints <= 0
+        puts "You have died".red.bold
+        puts "Would you like to try again?(Y/N)".cyan.blink.bold
+        @again = gets.chomp.upcase
+        if @again == "Y"
+            @room_index = 0
+        else
+            puts "Coward!".yellow
+        end
+        break
+    end
     # give options for room
     puts "What would you like to do".red
     if @room_index == 0
@@ -101,8 +121,6 @@ while @room_index < @rooms.length
     when "C"
         @room_index += 1
         puts "You enter the room and see...".light_green.bold
-        @goblin 
-        Fight.new(@player, @goblin).fight_cycle
     when @room_index != 0 && @choice == "D"
         @room_index -= 1
     else
